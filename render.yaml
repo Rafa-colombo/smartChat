@@ -1,0 +1,22 @@
+services:
+  # Serviço do Backend (FastAPI)
+  - type: web
+    name: chatbot-api
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false # definir essa chave diretamente no painel do Render por segurança
+      - key: CHROMA_PERSIST_DIR
+        value: /app/data/chroma_db
+
+  # Serviço do Frontend (Streamlit)
+  - type: web
+    name: chatbot-ui
+    env: docker
+    dockerfilePath: Dockerfile.ui
+    plan: free
+    envVars:
+      - key: API_URL
+        value: https://chatbot-api.onrender.com # Substitua pela URL real que o Render gerar para a sua API
