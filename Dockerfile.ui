@@ -6,7 +6,7 @@ WORKDIR /app
 RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir streamlit requests
 
 # Copia o arquivo da interface para a raiz do container
-COPY UI/frontend.py ./frontend.py
+COPY ui/frontend.py ./frontend.py
 
 # Expõe a porta padrão do Streamlit
 EXPOSE 8501
