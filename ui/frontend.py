@@ -11,8 +11,6 @@ st.set_page_config(
     layout="centered"
 )
 
-API_URL = "http://127.0.0.1:8000"
-
 st.title("🤖 Chatbot Inteligente com RAG & Tools")
 st.markdown("Converse com o agente, consulte CEPs, Pokémons e avalie as respostas para atualizar o comportamento do bot em tempo real!")
 
