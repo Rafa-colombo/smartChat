@@ -19,4 +19,4 @@ services:
     plan: free
     envVars:
       - key: API_URL
-        value: https://smartchat-dm1w.onrender.com
+        value: https://chatbot-api-b2rm.onrender.com # api para backend
