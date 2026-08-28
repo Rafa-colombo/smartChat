@@ -14,6 +14,8 @@ Fluxo principal: `Streamlit -> FastAPI -> Orchestrator -> ChromaDB (RAG) -> Gemi
 
 O agente usa *Function Calling* automático para decidir quando consultar ViaCEP ou PokéAPI. Cada resposta recebe um `message_id`; o usuário pode avaliá-la de 1 a 5 e enviar uma sugestão. O agente então reescreve seu *system prompt*, mantém versões em memória e utiliza a versão atual nas próximas interações. O histórico conversacional é limitado às 10 interações mais recentes.
 
+O projeto também está publicado no Render, usando serviços Docker no plano gratuito. A implantação é separada em dois serviços: `chatbot-api`, responsável pelo FastAPI, e `chatbot-ui`, responsável pelo Streamlit. Para testar a aplicação online, acesse: https://chatbot-ui-cq0k.onrender.com/
+
 ## Instruções de instalação e execução
 
 Pré-requisitos: Python 3.10+, acesso à internet e uma chave da API Gemini.
@@ -80,6 +82,29 @@ Para executar os testes:
 pip install ".[test]"
 python -m pytest
 ```
+
+## Subida do projeto
+
+### Deploy no Render
+
+O arquivo `render.yaml` configura a publicação de dois serviços independentes:
+
+1. **Backend (`chatbot-api`):** constrói a imagem com `Dockerfile`, popula o ChromaDB durante o build e inicia o Uvicorn.
+2. **Frontend (`chatbot-ui`):** constrói a imagem com `Dockerfile.ui`, inicia o Streamlit e aponta para a URL pública da API por meio de `API_URL`.
+
+No painel do Render, configure `GEMINI_API_KEY` como variável secreta do serviço `chatbot-api`. O endereço da API usado pelo frontend é definido em `render.yaml` pela variável `API_URL`. Após o deploy, o fluxo de acesso é:
+
+```text
+Usuário -> chatbot-ui (Streamlit) -> chatbot-api (FastAPI) -> Gemini / ChromaDB / APIs externas
+```
+
+O endereço público do frontend é [chatbot-ui-cq0k.onrender.com](https://chatbot-ui-cq0k.onrender.com/). A API possui documentação interativa em `https://chatbot-api-b2rm.onrender.com/docs`.
+
+Como os serviços utilizam o plano gratuito, a primeira requisição após um período de inatividade pode apresentar cold start. O ChromaDB é persistido no diretório configurado por `CHROMA_PERSIST_DIR` durante a execução do container; a chave Gemini deve permanecer exclusivamente nas variáveis de ambiente do provedor.
+
+### Subida local com Docker Compose
+
+Para reproduzir a subida em ambiente local, crie o `.env`, execute `docker compose up --build` e aguarde os serviços `api` e `ui` serem iniciados. O serviço `ui` depende do `api` e usa a rede interna do Compose (`http://api:8000`), enquanto o acesso externo ocorre pelas portas `8000` e `8501` publicadas no host.
 
 ## Instruções para rodar com Docker
 
