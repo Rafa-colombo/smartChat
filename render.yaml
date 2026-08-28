@@ -19,4 +19,4 @@ services:
     plan: free
     envVars:
       - key: API_URL
-        value: https://chatbot-api.onrender.com # Substitua pela URL real que o Render gerar para a sua API
+        value: https://smartchat-dm1w.onrender.com
