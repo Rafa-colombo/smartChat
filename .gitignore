@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+
+# Testes e Cache do Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Variáveis de ambiente sensíveis
+.env
+
+# Bancos de dados locais ou vetoriais temporários
+chroma_db/
+
+# IDEs e Editores
+.vscode/
+.idea/
+.DS_Store

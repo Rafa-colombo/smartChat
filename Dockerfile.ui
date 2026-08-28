@@ -1,0 +1,15 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Atualiza o pip e instala as dependências mínimas necessárias para a UI
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir streamlit requests
+
+# Copia o arquivo da interface para a raiz do container
+COPY UI/frontend.py ./frontend.py
+
+# Expõe a porta padrão do Streamlit
+EXPOSE 8501
+
+# Comando para iniciar o Streamlit em modo headless
+CMD ["streamlit", "run", "frontend.py", "--server.address=0.0.0.0", "--server.port=8501"]
